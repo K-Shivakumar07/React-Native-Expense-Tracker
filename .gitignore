@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment files
+.env*
+**/.env*
+*.local
+
+# Neon tooling
+.neon/
+.neon
+
+# Expo & Build artifacts
+.expo/
+**/.expo/
+dist/
+web-build/
+android/
+**/android/
+ios/
+**/ios/
+
+# Logs
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# OS
+.DS_Store
+Thumbs.db

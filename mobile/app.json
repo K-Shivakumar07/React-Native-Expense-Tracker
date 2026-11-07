@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "Expense Tracker",
+    "slug": "expense-tracker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/AppLogo.png",
+    "scheme": "mobile",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shiva.expensetracker"
+    },
+    "android": {
+      "package": "com.shiva.expensetracker",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/images/android-icon-foreground.png"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "df5f86dd-4cc3-4f04-9994-a8359129bc15"
+      }
+    }
+  }
+}
