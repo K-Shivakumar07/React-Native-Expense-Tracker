@@ -38,11 +38,12 @@ export default function Page() {
         console.error(JSON.stringify(signInAttempt, null, 2))
       }
     } catch (err) {
-      if (err.errors?.[0]?.code === "form_password_incorrect") {
-        setError("Password is incorrect. Please try again.");
-      } else {
-        setError("An error occurred. Please try again.");
-      }
+      const errorMessage =
+        err.errors?.[0]?.longMessage ||
+        err.errors?.[0]?.message ||
+        "An error occurred. Please try again.";
+      setError(errorMessage);
+      console.error("Sign in error:", err);
     }
   };
 

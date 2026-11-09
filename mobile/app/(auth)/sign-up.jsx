@@ -38,12 +38,12 @@ export default function SignUpScreen() {
       // and capture OTP code
       setPendingVerification(true)
     } catch (err) {
-      if (err.errors?.[0]?.code === "form_identifier_exists") {
-        setError("That email address is already in use. Please try another.");
-      } else {
-        setError("An error occurred. Please try again.");
-      }
-      console.log(err);
+      const errorMessage =
+        err.errors?.[0]?.longMessage ||
+        err.errors?.[0]?.message ||
+        "An error occurred. Please try again.";
+      setError(errorMessage);
+      console.error("Sign up error:", err);
     }
   };
 
@@ -68,9 +68,12 @@ export default function SignUpScreen() {
         console.error(JSON.stringify(signUpAttempt, null, 2))
       }
     } catch (err) {
-      // See Clerk docs: custom flows error handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2))
+      const errorMessage =
+        err.errors?.[0]?.longMessage ||
+        err.errors?.[0]?.message ||
+        "Verification failed. Please check the code and try again.";
+      setError(errorMessage);
+      console.error(JSON.stringify(err, null, 2));
     }
   }
 
