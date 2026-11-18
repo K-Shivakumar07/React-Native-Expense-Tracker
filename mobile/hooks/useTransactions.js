@@ -1,7 +1,7 @@
 // react custom hook file
 
 import { useCallback, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import { API_URL } from "../constants/api";
 
 
@@ -58,14 +58,23 @@ export const useTransactions = (userId) => {
   const deleteTransaction = async (id) => {
     try {
       const response = await fetch(`${API_URL}/transactions/${id}`, { method: "DELETE" });
-      if (!response.ok) throw new Error("Failed to delete transaction");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Failed to delete transaction");
+      }
 
       // Refresh data after deletion
-      loadData();
-      Alert.alert("Success", "Transaction deleted successfully");
+      await loadData();
+      if (Platform.OS !== "web") {
+        Alert.alert("Success", "Transaction deleted successfully");
+      }
     } catch (error) {
       console.error("Error deleting transaction:", error);
-      Alert.alert("Error", error.message);
+      if (Platform.OS === "web") {
+        window.alert(error.message || "Failed to delete transaction");
+      } else {
+        Alert.alert("Error", error.message || "Failed to delete transaction");
+      }
     }
   };
 

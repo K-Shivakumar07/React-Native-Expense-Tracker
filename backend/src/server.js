@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import { initDB } from './config/db.js';
 import rateLimiter from './middleware/rateLimiter.js';
 import transactionsRoute from './routes/transactionsRoute.js';
@@ -10,6 +11,9 @@ dotenv.config();
 const app = express();
 
 if (process.env.NODE_ENV === 'production') job.start();
+
+// Enable CORS for all incoming requests (web browsers, Vercel, localhost, mobile)
+app.use(cors());
 
 // Middleware to parse JSON bodies
 app.use(rateLimiter);

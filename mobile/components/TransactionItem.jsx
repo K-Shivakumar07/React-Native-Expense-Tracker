@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "../assets/styles/home.styles";
 import { COLORS } from "../constants/colors";
@@ -21,7 +21,7 @@ export const TransactionItem = ({ item, onDelete }) => {
 
   return (
     <View style={styles.transactionCard} key={item.id}>
-      <TouchableOpacity style={styles.transactionContent}>
+      <View style={styles.transactionContent}>
         <View style={styles.categoryIconContainer}>
           <Ionicons name={iconName} size={22} color={isIncome ? COLORS.income : COLORS.expense} />
         </View>
@@ -37,8 +37,11 @@ export const TransactionItem = ({ item, onDelete }) => {
           </Text>
           <Text style={styles.transactionDate}>{formatDate(item.created_at)}</Text>
         </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.deleteButton} onPress={() => onDelete(item.id)}>
+      </View>
+      <TouchableOpacity
+        style={[styles.deleteButton, Platform.OS === "web" && { cursor: "pointer" }]}
+        onPress={() => onDelete(item.id)}
+      >
         <Ionicons name="trash-outline" size={20} color={COLORS.expense} />
       </TouchableOpacity>
     </View>

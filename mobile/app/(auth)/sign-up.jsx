@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import { styles } from "@/assets/styles/auth.styles.js";
@@ -79,14 +79,17 @@ export default function SignUpScreen() {
 
   if (pendingVerification) {
     return (
-      <View style={styles.verificationContainer}>
+      <View style={[styles.verificationContainer, Platform.OS === 'web' && { maxWidth: 500, width: '100%', alignSelf: 'center' }]}>
         <Text style={styles.verificationTitle}>Verify your email</Text>
 
         {error ? (
           <View style={styles.errorBox}>
             <Ionicons name="alert-circle" size={20} color={COLORS.expense} />
             <Text style={styles.errorText}>{error}</Text>
-            <TouchableOpacity onPress={() => setError('')}>
+            <TouchableOpacity
+              onPress={() => setError('')}
+              style={Platform.OS === 'web' && { cursor: 'pointer' }}
+            >
               <Ionicons name="close" size={20} color={COLORS.textLight} />
             </TouchableOpacity>
           </View>
@@ -99,7 +102,10 @@ export default function SignUpScreen() {
           placeholderTextColor="#9A8478"
           onChangeText={(code) => setCode(code)}
         />
-        <TouchableOpacity onPress={onVerifyPress} style={styles.button}>
+        <TouchableOpacity
+          onPress={onVerifyPress}
+          style={[styles.button, Platform.OS === 'web' && { cursor: 'pointer' }]}
+        >
           <Text style={styles.buttonText}>Verify</Text>
         </TouchableOpacity>
       </View>
@@ -113,7 +119,7 @@ export default function SignUpScreen() {
       enableOnAndroid={true}
       enableAutomaticScroll={true}
     >
-      <View style={styles.container}>
+      <View style={[styles.container, Platform.OS === 'web' && { maxWidth: 500, width: '100%', alignSelf: 'center' }]}>
         <Image source={require("../../assets/images/revenue-i2.png")} style={styles.illustration} />
 
         <Text style={styles.title}>Create Account</Text>
@@ -122,7 +128,10 @@ export default function SignUpScreen() {
           <View style={styles.errorBox}>
             <Ionicons name="alert-circle" size={20} color={COLORS.expense} />
             <Text style={styles.errorText}>{error}</Text>
-            <TouchableOpacity onPress={() => setError("")}>
+            <TouchableOpacity
+              onPress={() => setError("")}
+              style={Platform.OS === 'web' && { cursor: 'pointer' }}
+            >
               <Ionicons name="close" size={20} color={COLORS.textLight} />
             </TouchableOpacity>
           </View>
@@ -147,7 +156,7 @@ export default function SignUpScreen() {
             onChangeText={(password) => setPassword(password)}
           />
           <TouchableOpacity
-            style={styles.eyeIcon}
+            style={[styles.eyeIcon, Platform.OS === 'web' && { cursor: 'pointer' }]}
             onPress={() => setShowPassword((prev) => !prev)}
           >
             <Ionicons
@@ -158,13 +167,19 @@ export default function SignUpScreen() {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
+        <TouchableOpacity
+          style={[styles.button, Platform.OS === 'web' && { cursor: 'pointer' }]}
+          onPress={onSignUpPress}
+        >
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
 
         <View style={styles.footerContainer}>
           <Text style={styles.footerText}>Already have an account?</Text>
-          <TouchableOpacity onPress={() => router.back()}>
+          <TouchableOpacity
+            onPress={() => router.replace("/sign-in")}
+            style={Platform.OS === 'web' && { cursor: 'pointer' }}
+          >
             <Text style={styles.linkText}>Sign in</Text>
           </TouchableOpacity>
         </View>

@@ -1,6 +1,6 @@
 import { useSignIn } from '@clerk/clerk-expo'
 import { Link, useRouter } from 'expo-router'
-import { Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View, Image, Platform } from 'react-native'
 import { useState } from 'react'
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { styles } from '../../assets/styles/auth.styles.js'
@@ -56,7 +56,7 @@ export default function Page() {
       enableAutomaticScroll={true}
       extraScrollHeight={30}
     >
-      <View style={styles.container}>
+      <View style={[styles.container, Platform.OS === 'web' && { maxWidth: 500, width: '100%', alignSelf: 'center' }]}>
       <Image
         source={require('../../assets/images/revenue-i4.png')}
         style={styles.illustration}
@@ -67,7 +67,10 @@ export default function Page() {
           <View style={styles.errorBox}>
             <Ionicons name="alert-circle" size={20} color={COLORS.expense} />
             <Text style={styles.errorText}>{error}</Text>
-            <TouchableOpacity onPress={() => setError("")}>
+            <TouchableOpacity
+              onPress={() => setError("")}
+              style={Platform.OS === 'web' && { cursor: 'pointer' }}
+            >
               <Ionicons name="close" size={20} color={COLORS.textLight} />
             </TouchableOpacity>
           </View>
@@ -92,7 +95,7 @@ export default function Page() {
           onChangeText={(password) => setPassword(password)}
         />
         <TouchableOpacity
-          style={styles.eyeIcon}
+          style={[styles.eyeIcon, Platform.OS === 'web' && { cursor: 'pointer' }]}
           onPress={() => setShowPassword((prev) => !prev)}
         >
           <Ionicons
@@ -103,7 +106,10 @@ export default function Page() {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={onSignInPress}>
+      <TouchableOpacity
+        style={[styles.button, Platform.OS === 'web' && { cursor: 'pointer' }]}
+        onPress={onSignInPress}
+      >
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
@@ -111,7 +117,7 @@ export default function Page() {
           <Text style={styles.footerText}>Don&apos;t have an account?</Text>
 
           <Link href="/sign-up" asChild>
-            <TouchableOpacity>
+            <TouchableOpacity style={Platform.OS === 'web' && { cursor: 'pointer' }}>
               <Text style={styles.linkText}>Sign up</Text>
             </TouchableOpacity>
           </Link>

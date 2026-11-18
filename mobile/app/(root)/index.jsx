@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import { Alert, FlatList, Image, RefreshControl, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Image, Platform, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { SignOutButton } from "@/components/SignOutButton";
 import { useTransactions } from "../../hooks/useTransactions";
 import { useEffect, useState } from "react";
@@ -33,6 +33,12 @@ export default function Page() {
   }, [loadData, user?.id]);
 
   const handleDelete = (id) => {
+    if (Platform.OS === "web") {
+      if (window.confirm("Are you sure you want to delete this transaction?")) {
+        deleteTransaction(id);
+      }
+      return;
+    }
     Alert.alert("Delete Transaction", "Are you sure you want to delete this transaction?", [
       { text: "Cancel", style: "cancel" },
       { text: "Delete", style: "destructive", onPress: () => deleteTransaction(id) },
@@ -42,7 +48,7 @@ export default function Page() {
   if (isLoading && !refreshing) return <PageLoader />;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, Platform.OS === "web" && { maxWidth: 640, width: "100%", alignSelf: "center" }]}>
       <View style={styles.content}>
         {/* HEADER */}
         <View style={styles.header}>
@@ -62,7 +68,10 @@ export default function Page() {
           </View>
           {/* RIGHT */}
           <View style={styles.headerRight}>
-            <TouchableOpacity style={styles.addButton} onPress={() => router.push("/create")}>
+            <TouchableOpacity
+              style={[styles.addButton, Platform.OS === "web" && { cursor: "pointer" }]}
+              onPress={() => router.push("/create")}
+            >
               <Ionicons name="add" size={20} color="#FFF" />
               <Text style={styles.addButtonText}>Add</Text>
             </TouchableOpacity>
